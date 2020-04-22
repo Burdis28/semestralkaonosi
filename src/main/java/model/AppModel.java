@@ -118,4 +118,8 @@ public class AppModel {
       logger.error("DtoIn is null.");
     }
   }
+
+  public List<OfferDtoOut> getAllActiveOffers() {
+    return null;
+  }
 }

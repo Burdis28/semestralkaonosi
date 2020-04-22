@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,11 +19,15 @@ public class Offer {
 
   private String caption;
   private String description;
+  private Boolean active;
 
   @OneToMany(mappedBy="id")
   private List<Toy> toys;
 
+  @OneToOne(mappedBy="id")
   private User user;
+
+  private Bid winner;
 
   public Offer() {
   }
@@ -58,6 +63,14 @@ public class Offer {
     this.description = description;
   }
 
+  public Boolean getActive() {
+    return active;
+  }
+
+  public void setActive(Boolean active) {
+    this.active = active;
+  }
+
   public List<Toy> getToys() {
     return toys;
   }
@@ -72,5 +85,13 @@ public class Offer {
 
   public void setUser(User user) {
     this.user = user;
+  }
+
+  public Bid getWinner() {
+    return winner;
+  }
+
+  public void setWinner(Bid winner) {
+    this.winner = winner;
   }
 }

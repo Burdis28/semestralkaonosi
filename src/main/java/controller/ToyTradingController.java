@@ -28,7 +28,6 @@ public class ToyTradingController {
   @Autowired
   private AppModel appModel;
 
-
   @RequestMapping(value = "/register", method = RequestMethod.POST)
   public void register(@RequestBody RegisterDtoIn dtoIn) {
     appModel.register(dtoIn);
@@ -42,6 +41,11 @@ public class ToyTradingController {
   @RequestMapping(value = "/getAllOffers", method = RequestMethod.GET)
   public List<OfferDtoOut> getAllOffers() {
     return appModel.getAllOffers();
+  }
+
+  @RequestMapping(value = "/getAllActiveOffers", method = RequestMethod.GET)
+  public List<OfferDtoOut> getAllActiveOffers() {
+    return appModel.getAllActiveOffers();
   }
 
   @RequestMapping(value = "/getAllBids/{offerId}", method = RequestMethod.GET)
@@ -58,4 +62,7 @@ public class ToyTradingController {
   public void createOffer(@RequestBody CreateBidDtoIn dtoIn) {
     appModel.createBid(dtoIn);
   }
+
+
+
 }

@@ -6,12 +6,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "bids")
 public class Bid {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -20,10 +20,12 @@ public class Bid {
 
   private String caption;
   private String description;
+  private Boolean active;
 
   @OneToMany(mappedBy="id")
   private List<Toy> toys;
 
+  @OneToOne(mappedBy="id")
   private User user;
 
   public Bid(Long offerId, String caption, String description, List<Toy> toys, User user) {
@@ -66,6 +68,14 @@ public class Bid {
     this.description = description;
   }
 
+  public Boolean getActive() {
+    return active;
+  }
+
+  public void setActive(Boolean active) {
+    this.active = active;
+  }
+
   public List<Toy> getToys() {
     return toys;
   }
@@ -81,4 +91,6 @@ public class Bid {
   public void setUser(User user) {
     this.user = user;
   }
+
+
 }
