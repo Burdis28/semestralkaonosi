@@ -1,5 +1,6 @@
 package schema;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,6 +28,27 @@ public class User {
 
   @OneToMany(mappedBy="id")
   private List<Offer> biddedOffers;
+
+  public User() {
+
+  }
+
+  public User(String username, String password, String name, String phoneNumber, List<Offer> offers, List<Offer> biddedOffers) {
+    this.username = username;
+    this.password = password;
+    this.name = name;
+    this.phoneNumber = phoneNumber;
+    if(offers == null) {
+      this.offers = new ArrayList<>();
+    } else {
+      this.offers = offers;
+    }
+    if(biddedOffers == null) {
+      this.biddedOffers = new ArrayList<>();
+    } else {
+      this.biddedOffers = biddedOffers;
+    }
+  }
 
   public int getId() {
     return id;

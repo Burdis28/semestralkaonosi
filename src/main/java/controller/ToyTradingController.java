@@ -30,16 +30,20 @@ public class ToyTradingController {
 
   @RequestMapping(value = "/register", method = RequestMethod.POST)
   public void register(@RequestBody RegisterDtoIn dtoIn) {
+    logger.info("Register is starting.");
     appModel.register(dtoIn);
+    logger.info("Register has ended.");
   }
 
   @RequestMapping(value = "/login", method = RequestMethod.POST)
   public String login(@RequestBody LoginDtoIn dtoIn) {
+    logger.info("Login is starting.");
     return appModel.login(dtoIn);
   }
 
   @RequestMapping(value = "/getAllOffers", method = RequestMethod.GET)
   public List<OfferDtoOut> getAllOffers() {
+    logger.info("Listing all offers.");
     return appModel.getAllOffers();
   }
 
@@ -50,19 +54,36 @@ public class ToyTradingController {
 
   @RequestMapping(value = "/getAllBids/{offerId}", method = RequestMethod.GET)
   public List<BidDtoOut> getAllBids(@PathVariable("offerId") Long offerId) {
+    logger.info("Listing all bids for offerId: " + offerId);
     return appModel.getAllBids(offerId);
   }
 
   @RequestMapping(value = "/createOffer", method = RequestMethod.POST)
   public void createOffer(@RequestBody CreateOfferDtoIn dtoIn) {
+    logger.info("Creating offer.");
     appModel.createOffer(dtoIn);
+    logger.info("Offer was created.");
   }
 
   @RequestMapping(value = "/createBid", method = RequestMethod.POST)
   public void createOffer(@RequestBody CreateBidDtoIn dtoIn) {
+    logger.info("Creating bid.");
     appModel.createBid(dtoIn);
+    logger.info("Bid was created.");
   }
 
+  @RequestMapping(value = "/acceptBid/{bidId}", method = RequestMethod.POST)
+  public void acceptBid(@PathVariable("bidId") Long bidId) {
+    logger.info("Accept Bid and close offer.");
+    appModel.acceptBid(bidId);
+    logger.info("Bid was accepted and offer closed.");
+  }
 
+  @RequestMapping(value = "/initialize", method = RequestMethod.POST)
+  public void initialize() {
+    logger.info("Initialize.");
+    appModel.initialize();
+    logger.info("Successfully initialized.");
+  }
 
 }

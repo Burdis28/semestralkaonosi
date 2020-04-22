@@ -12,6 +12,7 @@ import dto.OfferDtoOut;
 import dto.RegisterDtoIn;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,8 +89,13 @@ public class AppModel {
   }
 
   public String login(LoginDtoIn dtoIn) {
-    return "Nemam rad upce";
-  }
+      //return "Nemam rad upce";
+    if(dtoIn != null) {
+      return "1";
+    } else {
+      return "0";
+    }
+    }
 
   public void createOffer(CreateOfferDtoIn dtoIn) {
     if (dtoIn != null) {
@@ -117,6 +123,20 @@ public class AppModel {
     } else {
       logger.error("DtoIn is null.");
     }
+  }
+
+  public void acceptBid(Long bidId) {
+    //accept bid and close offer
+    if(bidId != null) {
+      Optional<Bid> bid = bidDao.get(bidId);
+      if(bid.isPresent()) {
+        bid.get();
+      }
+    }
+  }
+
+  public void initialize() {
+    userDao.save(new User("admin", "password123", "Administrator", "745862458", null, null));
   }
 
   public List<OfferDtoOut> getAllActiveOffers() {
