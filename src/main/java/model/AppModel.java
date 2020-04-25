@@ -89,13 +89,22 @@ public class AppModel {
   }
 
   public String login(LoginDtoIn dtoIn) {
-      //return "Nemam rad upce";
-    if(dtoIn != null) {
-      return "1";
+    //return "Nemam rad upce";
+    if (dtoIn != null) {
+      User user = userDao.getByUsername(dtoIn.getUsername());
+      if (user != null) {
+        if (user.getPassword().equals(dtoIn.getPassword())) {
+          return "1";
+        } else {
+          return "0";
+        }
+      } else {
+        return "0";
+      }
     } else {
       return "0";
     }
-    }
+  }
 
   public void createOffer(CreateOfferDtoIn dtoIn) {
     if (dtoIn != null) {
@@ -130,16 +139,42 @@ public class AppModel {
     if(bidId != null) {
       Optional<Bid> bid = bidDao.get(bidId);
       if(bid.isPresent()) {
-        bid.get();
+        bid.get().setActive(false);
+        Optional<Offer> offer = offerDao.get(bid.get().getOfferId());
+        offer.ifPresent(offer1 -> offer1.setActive(false));
+        offer.ifPresent(offer1 -> offer1.setWinner(bid.get()));
+        List<Bid> bids = bidDao.getAllBidsForOffer(bid.get().getOfferId());
+        for (Bid bid1 : bids) {
+          bid1.setActive(false);
+          bidDao.save(bid1);
+        }
       }
     }
   }
 
   public void initialize() {
-    userDao.save(new User("admin", "password123", "Administrator", "745862458", null, null));
+    User admin = new User("admin", "password123", "Administrator", "745862458", null, null);
+    User admin2 = new User("admin2", "password123", "Administrator 2", "745862447", null, null);
+    userDao.save(admin);
+    userDao.save(admin2);
+    Offer offer1 = new Offer("Caption 1", "Description 1", null, admin);
+    Offer offer2 = new Offer("Caption 2", "Description 2", null, admin);
+    Offer offer3 = new Offer("Caption 3", "Description 3", null, admin);
+    Offer offer4 = new Offer("Caption 4", "Description 4", null, admin2);
+    Offer offer5 = new Offer("Caption 5", "Description 5", null, admin);
+    offerDao.save(offer1); offerDao.save(offer2); offerDao.save(offer3); offerDao.save(offer4); offerDao.save(offer5);
+    Bid bid = new Bid(offerDao.getAll().get(0).getId(), "caption bid", "description bid", null, admin2);
+    bidDao.save(bid);
+
   }
 
   public List<OfferDtoOut> getAllActiveOffers() {
     return null;
+  }
+
+  public void deleteOffer(Long offerId) {
+    if(offerId != null) {
+      offerDao.delete(offerDao.get(offerId).get());
+    }
   }
 }

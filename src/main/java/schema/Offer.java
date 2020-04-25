@@ -37,6 +37,8 @@ public class Offer {
     this.description = description;
     this.toys = toys;
     this.user = user;
+    this.active = true;
+    this.winner = null;
   }
 
   public Long getId() {

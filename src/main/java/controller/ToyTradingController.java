@@ -79,6 +79,13 @@ public class ToyTradingController {
     logger.info("Bid was accepted and offer closed.");
   }
 
+  @RequestMapping(value = "/deleteOffer/{offerId}", method = RequestMethod.POST)
+  public void createOffer(@PathVariable("offerId") Long offerId) {
+    logger.info("Deleting offer.");
+    appModel.deleteOffer(offerId);
+    logger.info("Offer was deleted.");
+  }
+
   @RequestMapping(value = "/initialize", method = RequestMethod.POST)
   public void initialize() {
     logger.info("Initialize.");

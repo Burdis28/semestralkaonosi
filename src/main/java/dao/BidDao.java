@@ -30,6 +30,14 @@ public class BidDao implements Dao<Bid>{
     return query.getResultList();
   }
 
+  @Transactional
+  public List<Bid> getAllBidsForOffer(Long offerId) {
+    Query q = entityManager.createQuery(
+        "SELECT u FROM bids u WHERE u.offerId = :offerId");
+    q.setParameter("offerId", offerId);
+    return q.getResultList();
+  }
+
   @Override
   @Transactional
   public void save(Bid bid) {

@@ -28,12 +28,17 @@ public class Bid {
   @OneToOne(mappedBy="id")
   private User user;
 
+  public Bid() {
+
+  }
+
   public Bid(Long offerId, String caption, String description, List<Toy> toys, User user) {
     this.offerId = offerId;
     this.caption = caption;
     this.description = description;
     this.toys = toys;
     this.user = user;
+    this.active = true;
   }
 
   public Long getId() {
