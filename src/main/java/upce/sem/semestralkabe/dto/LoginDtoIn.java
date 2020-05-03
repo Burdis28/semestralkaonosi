@@ -5,6 +5,9 @@ public class LoginDtoIn {
   private String username;
   private String password;
 
+  public LoginDtoIn() {
+  }
+
   public LoginDtoIn(String username, String password) {
     this.username = username;
     this.password = password;

@@ -41,31 +41,19 @@ public class BidDao implements Dao<Bid>{
   @Override
   @Transactional
   public void save(Bid bid) {
-    executeInsideTransaction(entityManager -> entityManager.persist(bid));
+    entityManager.persist(bid);
   }
 
   @Override
   @Transactional
   public void update(Bid bid) {
-    executeInsideTransaction(entityManager -> entityManager.merge(bid));
+    entityManager.merge(bid);
   }
 
   @Override
   @Transactional
   public void delete(Bid bid) {
-    executeInsideTransaction(entityManager -> entityManager.remove(bid));
+    entityManager.remove(bid);
   }
 
-  private void executeInsideTransaction(Consumer<EntityManager> action) {
-    EntityTransaction tx = entityManager.getTransaction();
-    try {
-      tx.begin();
-      action.accept(entityManager);
-      tx.commit();
-    }
-    catch (RuntimeException e) {
-      tx.rollback();
-      throw e;
-    }
-  }
 }

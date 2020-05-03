@@ -160,11 +160,43 @@ public class AppModel {
     Offer offer1 = new Offer("Caption 1", "Description 1", null, admin);
     Offer offer2 = new Offer("Caption 2", "Description 2", null, admin);
     Offer offer3 = new Offer("Caption 3", "Description 3", null, admin);
-    Offer offer4 = new Offer("Caption 4", "Description 4", null, admin2);
+    Offer offer4 = new Offer("Caption 4", "Description 4", null, admin);
     Offer offer5 = new Offer("Caption 5", "Description 5", null, admin);
-    offerDao.save(offer1); offerDao.save(offer2); offerDao.save(offer3); offerDao.save(offer4); offerDao.save(offer5);
+
+    admin.addOffer(offer1);
+    offerDao.save(offer1);
+    userDao.save(admin);
+
+    admin.addOffer(offer2);
+    offerDao.save(offer2);
+    userDao.save(admin);
+
+    admin.addOffer(offer3);
+    offerDao.save(offer3);
+    userDao.save(admin);
+
+    admin.addOffer(offer4);
+    offerDao.save(offer4);
+    userDao.save(admin);
+
+    admin.addOffer(offer5);
+    offerDao.save(offer5);
+    userDao.save(admin);
+
     Bid bid = new Bid(offerDao.getAll().get(0).getId(), "caption bid", "description bid", null, admin2);
+    Bid bid2 = new Bid(offerDao.getAll().get(1).getId(), "caption bid 2", "description bid 2", null, admin2);
+    Bid bid3 = new Bid(offerDao.getAll().get(0).getId(), "caption bid 3", "description bid 3", null, admin2);
+
     bidDao.save(bid);
+    userDao.save(admin2);
+
+    bidDao.save(bid2);
+    userDao.save(admin2);
+
+    bidDao.save(bid3);
+    userDao.save(admin2);
+
+
   }
 
   public List<OfferDtoOut> getAllActiveOffers() {

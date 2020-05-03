@@ -2,7 +2,9 @@ package upce.sem.semestralkabe.schema;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,13 +24,13 @@ public class User {
   private String name;
   private String phoneNumber;
 
-  @OneToMany(mappedBy="id")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
   private List<Offer> offers;
 
-  @OneToMany(mappedBy="id")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   private List<Offer> biddedOffers;
 
-  @OneToMany(mappedBy="id")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   private List<Bid> bids;
 
   public User() {
@@ -106,5 +108,22 @@ public class User {
 
   public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
+  }
+
+  public List<Bid> getBids() {
+    return bids;
+  }
+
+  public void setBids(List<Bid> bids) {
+    this.bids = bids;
+  }
+
+  public void addOffer(Offer offer) {
+    if(offers != null) {
+      offers.add(offer);
+    } else {
+      offers = new ArrayList<>();
+      offers.add(offer);
+    }
   }
 }

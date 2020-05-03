@@ -33,31 +33,18 @@ public class OfferDao implements Dao<Offer>{
   @Override
   @Transactional
   public void save(Offer offer) {
-    executeInsideTransaction(entityManager -> entityManager.persist(offer));
+    entityManager.persist(offer);
   }
 
   @Override
   @Transactional
-  public void update(Offer offer) {
-    executeInsideTransaction(entityManager -> entityManager.merge(offer));
+  public void update(Offer offer){
+    entityManager.merge(offer);
   }
 
   @Override
   @Transactional
   public void delete(Offer offer) {
-    executeInsideTransaction(entityManager -> entityManager.remove(offer));
-  }
-
-  private void executeInsideTransaction(Consumer<EntityManager> action) {
-    EntityTransaction tx = entityManager.getTransaction();
-    try {
-      tx.begin();
-      action.accept(entityManager);
-      tx.commit();
-    }
-    catch (RuntimeException e) {
-      tx.rollback();
-      throw e;
-    }
+    entityManager.remove(offer);
   }
 }

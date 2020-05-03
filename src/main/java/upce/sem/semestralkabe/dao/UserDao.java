@@ -30,7 +30,7 @@ public class UserDao implements Dao<User> {
     return query.getResultList();
   }
 
-
+  @Transactional
   public User getByUsername(String username) {
     Query q = entityManager.createQuery(
         "SELECT u FROM User u WHERE u.username = :username");
@@ -41,32 +41,20 @@ public class UserDao implements Dao<User> {
   @Override
   @Transactional
   public void save(User user) {
-    executeInsideTransaction(entityManager -> entityManager.persist(user));
+    entityManager.persist(user);
   }
 
   @Override
   @Transactional
   public void update(User user) {
-    executeInsideTransaction(entityManager -> entityManager.merge(user));
+    entityManager.merge(user);
   }
 
   @Override
   @Transactional
   public void delete(User user) {
-    executeInsideTransaction(entityManager -> entityManager.remove(user));
+    entityManager.remove(user);
   }
 
-  private void executeInsideTransaction(Consumer<EntityManager> action) {
-    EntityTransaction tx = entityManager.getTransaction();
-    try {
-      tx.begin();
-      action.accept(entityManager);
-      tx.commit();
-    }
-    catch (RuntimeException e) {
-      tx.rollback();
-      throw e;
-    }
-  }
 
 }

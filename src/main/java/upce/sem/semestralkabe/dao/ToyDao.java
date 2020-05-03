@@ -33,31 +33,19 @@ public class ToyDao implements Dao<Toy> {
   @Override
   @Transactional
   public void save(Toy toy) {
-    executeInsideTransaction(entityManager -> entityManager.persist(toy));
+    entityManager.persist(toy);
   }
 
   @Override
   @Transactional
   public void update(Toy toy) {
-    executeInsideTransaction(entityManager -> entityManager.merge(toy));
+    entityManager.merge(toy);
   }
 
   @Override
   @Transactional
   public void delete(Toy toy) {
-    executeInsideTransaction(entityManager -> entityManager.remove(toy));
+    entityManager.remove(toy);
   }
 
-  private void executeInsideTransaction(Consumer<EntityManager> action) {
-    EntityTransaction tx = entityManager.getTransaction();
-    try {
-      tx.begin();
-      action.accept(entityManager);
-      tx.commit();
-    }
-    catch (RuntimeException e) {
-      tx.rollback();
-      throw e;
-    }
-  }
 }
