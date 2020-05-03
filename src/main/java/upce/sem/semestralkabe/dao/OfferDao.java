@@ -1,4 +1,4 @@
-package dao;
+package upce.sem.semestralkabe.dao;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,52 +8,44 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
-import schema.Bid;
+import upce.sem.semestralkabe.schema.Offer;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class BidDao implements Dao<Bid>{
+public class OfferDao implements Dao<Offer>{
 
   @PersistenceContext
   private EntityManager entityManager;
 
   @Override
   @Transactional
-  public Optional<Bid> get(long id) {
-    return Optional.ofNullable(entityManager.find(Bid.class, id));
+  public Optional<Offer> get(long id) {
+    return Optional.ofNullable(entityManager.find(Offer.class, id));
   }
 
   @Override
   @Transactional
-  public List<Bid> getAll() {
-    Query query = entityManager.createQuery("SELECT e FROM bids e");
+  public List<Offer> getAll() {
+    Query query = entityManager.createQuery("SELECT e FROM Offer e");
     return query.getResultList();
   }
 
+  @Override
   @Transactional
-  public List<Bid> getAllBidsForOffer(Long offerId) {
-    Query q = entityManager.createQuery(
-        "SELECT u FROM bids u WHERE u.offerId = :offerId");
-    q.setParameter("offerId", offerId);
-    return q.getResultList();
+  public void save(Offer offer) {
+    executeInsideTransaction(entityManager -> entityManager.persist(offer));
   }
 
   @Override
   @Transactional
-  public void save(Bid bid) {
-    executeInsideTransaction(entityManager -> entityManager.persist(bid));
+  public void update(Offer offer) {
+    executeInsideTransaction(entityManager -> entityManager.merge(offer));
   }
 
   @Override
   @Transactional
-  public void update(Bid bid) {
-    executeInsideTransaction(entityManager -> entityManager.merge(bid));
-  }
-
-  @Override
-  @Transactional
-  public void delete(Bid bid) {
-    executeInsideTransaction(entityManager -> entityManager.remove(bid));
+  public void delete(Offer offer) {
+    executeInsideTransaction(entityManager -> entityManager.remove(offer));
   }
 
   private void executeInsideTransaction(Consumer<EntityManager> action) {

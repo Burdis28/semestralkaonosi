@@ -1,4 +1,4 @@
-package schema;
+package upce.sem.semestralkabe.schema;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

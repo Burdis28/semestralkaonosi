@@ -1,14 +1,14 @@
-package controller;
+package upce.sem.semestralkabe.controller;
 
-import dto.BidDtoOut;
-import dto.CreateBidDtoIn;
-import dto.CreateOfferDtoIn;
-import dto.LoginDtoIn;
-import dto.OfferDtoOut;
-import dto.RegisterDtoIn;
+import upce.sem.semestralkabe.dto.BidDtoOut;
+import upce.sem.semestralkabe.dto.CreateBidDtoIn;
+import upce.sem.semestralkabe.dto.CreateOfferDtoIn;
+import upce.sem.semestralkabe.dto.LoginDtoIn;
+import upce.sem.semestralkabe.dto.OfferDtoOut;
+import upce.sem.semestralkabe.dto.RegisterDtoIn;
 import java.util.List;
 import javax.transaction.Transactional;
-import model.AppModel;
+import upce.sem.semestralkabe.model.AppModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/toychange")
+@RequestMapping(value = "toychange")
 @Transactional
 public class ToyTradingController {
 

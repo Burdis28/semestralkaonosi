@@ -1,4 +1,4 @@
-package dto;
+package upce.sem.semestralkabe.dto;
 
 public class RegisterDtoIn {
 

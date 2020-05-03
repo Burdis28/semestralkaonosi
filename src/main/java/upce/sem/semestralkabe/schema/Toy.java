@@ -1,4 +1,4 @@
-package schema;
+package upce.sem.semestralkabe.schema;
 
 import java.util.ArrayList;
 import java.util.List;

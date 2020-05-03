@@ -1,7 +1,7 @@
-package dto;
+package upce.sem.semestralkabe.dto;
 
 import java.util.List;
-import schema.Toy;
+import upce.sem.semestralkabe.schema.Toy;
 
 public class CreateOfferDtoIn {
 

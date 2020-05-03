@@ -1,4 +1,4 @@
-package dao;
+package upce.sem.semestralkabe.dao;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,9 +1,9 @@
-package dto;
+package upce.sem.semestralkabe.dto;
 
 import java.util.List;
-import schema.Toy;
+import upce.sem.semestralkabe.schema.Toy;
 
-public class OfferDtoOut {
+public class BidDtoOut {
 
   private Long offerId;
   private String nameOfPerson;
@@ -11,7 +11,7 @@ public class OfferDtoOut {
   private String description;
   private List<Toy> toys;
 
-  public OfferDtoOut(Long offerId, String nameOfPerson, String caption, String description, List<Toy> toys) {
+  public BidDtoOut(Long offerId, String nameOfPerson, String caption, String description, List<Toy> toys) {
     this.offerId = offerId;
     this.nameOfPerson = nameOfPerson;
     this.caption = caption;

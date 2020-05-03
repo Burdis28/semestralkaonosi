@@ -1,4 +1,4 @@
-package dao;
+package upce.sem.semestralkabe.dao;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +8,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
-import schema.Toy;
+import upce.sem.semestralkabe.schema.Toy;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -26,7 +26,7 @@ public class ToyDao implements Dao<Toy> {
   @Override
   @Transactional
   public List<Toy> getAll() {
-    Query query = entityManager.createQuery("SELECT e FROM toys e");
+    Query query = entityManager.createQuery("SELECT e FROM Toy e");
     return query.getResultList();
   }
 

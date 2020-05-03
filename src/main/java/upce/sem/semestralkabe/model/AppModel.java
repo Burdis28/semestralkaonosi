@@ -1,15 +1,15 @@
-package model;
+package upce.sem.semestralkabe.model;
 
-import dao.BidDao;
-import dao.OfferDao;
-import dao.ToyDao;
-import dao.UserDao;
-import dto.BidDtoOut;
-import dto.CreateBidDtoIn;
-import dto.CreateOfferDtoIn;
-import dto.LoginDtoIn;
-import dto.OfferDtoOut;
-import dto.RegisterDtoIn;
+import upce.sem.semestralkabe.dao.BidDao;
+import upce.sem.semestralkabe.dao.OfferDao;
+import upce.sem.semestralkabe.dao.ToyDao;
+import upce.sem.semestralkabe.dao.UserDao;
+import upce.sem.semestralkabe.dto.BidDtoOut;
+import upce.sem.semestralkabe.dto.CreateBidDtoIn;
+import upce.sem.semestralkabe.dto.CreateOfferDtoIn;
+import upce.sem.semestralkabe.dto.LoginDtoIn;
+import upce.sem.semestralkabe.dto.OfferDtoOut;
+import upce.sem.semestralkabe.dto.RegisterDtoIn;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import schema.Bid;
-import schema.Offer;
-import schema.User;
+import upce.sem.semestralkabe.schema.Bid;
+import upce.sem.semestralkabe.schema.Offer;
+import upce.sem.semestralkabe.schema.User;
 
 @Component
 @Service
@@ -142,7 +142,7 @@ public class AppModel {
         bid.get().setActive(false);
         Optional<Offer> offer = offerDao.get(bid.get().getOfferId());
         offer.ifPresent(offer1 -> offer1.setActive(false));
-        offer.ifPresent(offer1 -> offer1.setWinner(bid.get()));
+        offer.ifPresent(offer1 -> offer1.setWinner(bid.get().getOfferId()));
         List<Bid> bids = bidDao.getAllBidsForOffer(bid.get().getOfferId());
         for (Bid bid1 : bids) {
           bid1.setActive(false);
@@ -165,7 +165,6 @@ public class AppModel {
     offerDao.save(offer1); offerDao.save(offer2); offerDao.save(offer3); offerDao.save(offer4); offerDao.save(offer5);
     Bid bid = new Bid(offerDao.getAll().get(0).getId(), "caption bid", "description bid", null, admin2);
     bidDao.save(bid);
-
   }
 
   public List<OfferDtoOut> getAllActiveOffers() {

@@ -1,21 +1,24 @@
-package schema;
+package upce.sem.semestralkabe.schema;
 
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "offers")
-public class Offer {
-
+@Table(name = "bids")
+public class Bid {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  private Long offerId;
 
   private String caption;
   private String description;
@@ -24,21 +27,21 @@ public class Offer {
   @OneToMany(mappedBy="id")
   private List<Toy> toys;
 
-  @OneToOne(mappedBy="id")
+  @ManyToOne
+  @JoinColumn(name="user_id")
   private User user;
 
-  private Bid winner;
+  public Bid() {
 
-  public Offer() {
   }
 
-  public Offer(String caption, String description, List<Toy> toys, User user) {
+  public Bid(Long offerId, String caption, String description, List<Toy> toys, User user) {
+    this.offerId = offerId;
     this.caption = caption;
     this.description = description;
     this.toys = toys;
     this.user = user;
     this.active = true;
-    this.winner = null;
   }
 
   public Long getId() {
@@ -47,6 +50,14 @@ public class Offer {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public Long getOfferId() {
+    return offerId;
+  }
+
+  public void setOfferId(Long offerId) {
+    this.offerId = offerId;
   }
 
   public String getCaption() {
@@ -89,11 +100,5 @@ public class Offer {
     this.user = user;
   }
 
-  public Bid getWinner() {
-    return winner;
-  }
 
-  public void setWinner(Bid winner) {
-    this.winner = winner;
-  }
 }

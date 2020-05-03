@@ -1,21 +1,20 @@
-package schema;
+package upce.sem.semestralkabe.schema;
 
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "users")
 public class User {
 
   @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
+  @GeneratedValue(strategy=GenerationType.AUTO)
   private int id;
 
   private String username;
@@ -28,6 +27,9 @@ public class User {
 
   @OneToMany(mappedBy="id")
   private List<Offer> biddedOffers;
+
+  @OneToMany(mappedBy="id")
+  private List<Bid> bids;
 
   public User() {
 
