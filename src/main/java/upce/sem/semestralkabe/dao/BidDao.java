@@ -38,6 +38,20 @@ public class BidDao implements Dao<Bid>{
     return q.getResultList();
   }
 
+  @Transactional
+  public List<Bid> getAllBidsOfUser(int userId, boolean active) {
+    if (active) {
+      Query query = entityManager.createQuery("SELECT e FROM Bid e where e.active = :active and e.user.id = :userId");
+      query.setParameter("active", true);
+      query.setParameter("userId", userId);
+      return query.getResultList();
+    } else {
+      Query query = entityManager.createQuery("SELECT e FROM Bid e where e.user.id = :userId");
+      query.setParameter("userId", userId);
+      return query.getResultList();
+    }
+  }
+
   @Override
   @Transactional
   public void save(Bid bid) {

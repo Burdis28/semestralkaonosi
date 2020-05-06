@@ -12,7 +12,7 @@ import upce.sem.semestralkabe.schema.Offer;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class OfferDao implements Dao<Offer>{
+public class OfferDao implements Dao<Offer> {
 
   @PersistenceContext
   private EntityManager entityManager;
@@ -30,6 +30,27 @@ public class OfferDao implements Dao<Offer>{
     return query.getResultList();
   }
 
+  @Transactional
+  public List<Offer> getAllActiveOffers() {
+    Query query = entityManager.createQuery("SELECT e FROM Offer e where e.active = :active");
+    query.setParameter("active", true);
+    return query.getResultList();
+  }
+
+  @Transactional
+  public List<Offer> getAllOffersOfUser(int userId, boolean active) {
+    if (active) {
+      Query query = entityManager.createQuery("SELECT e FROM Offer e where e.active = :active and e.user.id = :userId");
+      query.setParameter("active", true);
+      query.setParameter("userId", userId);
+      return query.getResultList();
+    } else {
+      Query query = entityManager.createQuery("SELECT e FROM Offer e where e.user.id = :userId");
+      query.setParameter("userId", userId);
+      return query.getResultList();
+    }
+  }
+
   @Override
   @Transactional
   public void save(Offer offer) {
@@ -38,7 +59,7 @@ public class OfferDao implements Dao<Offer>{
 
   @Override
   @Transactional
-  public void update(Offer offer){
+  public void update(Offer offer) {
     entityManager.merge(offer);
   }
 

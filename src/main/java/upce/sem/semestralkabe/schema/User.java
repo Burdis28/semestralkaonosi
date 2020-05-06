@@ -126,4 +126,13 @@ public class User {
       offers.add(offer);
     }
   }
+
+  public void addBid(Bid bid) {
+    if(bids != null) {
+      bids.add(bid);
+    } else {
+      bids = new ArrayList<>();
+      bids.add(bid);
+    }
+  }
 }

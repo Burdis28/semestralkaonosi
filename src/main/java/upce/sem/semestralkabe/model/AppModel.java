@@ -7,6 +7,7 @@ import upce.sem.semestralkabe.dao.UserDao;
 import upce.sem.semestralkabe.dto.BidDtoOut;
 import upce.sem.semestralkabe.dto.CreateBidDtoIn;
 import upce.sem.semestralkabe.dto.CreateOfferDtoIn;
+import upce.sem.semestralkabe.dto.GetAllMyOffersDtoIn;
 import upce.sem.semestralkabe.dto.LoginDtoIn;
 import upce.sem.semestralkabe.dto.OfferDtoOut;
 import upce.sem.semestralkabe.dto.RegisterDtoIn;
@@ -73,17 +74,15 @@ public class AppModel {
 
   public List<BidDtoOut> getAllBids(Long offerId) {
     try {
-      List<Bid> bids = bidDao.getAll();
+      List<Bid> bids = bidDao.getAllBidsForOffer(offerId);
       List<BidDtoOut> dtoOutList = new ArrayList<>();
 
       for(Bid bid : bids) {
-        if(bid.getOfferId().equals(offerId)) {
-          dtoOutList.add(new BidDtoOut(bid.getOfferId(), bid.getUser().getName(), bid.getCaption(), bid.getDescription(), bid.getToys()));
-        }
+        dtoOutList.add(new BidDtoOut(bid.getOfferId(), bid.getUser().getName(), bid.getCaption(), bid.getDescription(), bid.getToys()));
       }
       return dtoOutList;
     } catch (Exception e) {
-      logger.error("Error during saving user: " + e);
+      logger.error("Error during getting all bids: " + e);
       throw e;
     }
   }
@@ -94,7 +93,7 @@ public class AppModel {
       User user = userDao.getByUsername(dtoIn.getUsername());
       if (user != null) {
         if (user.getPassword().equals(dtoIn.getPassword())) {
-          return "1";
+          return "" + user.getId();
         } else {
           return "0";
         }
@@ -111,7 +110,9 @@ public class AppModel {
       User user = userDao.getByUsername(dtoIn.getUsername());
       if (user!= null) {
         Offer offer = new Offer(dtoIn.getCaption(), dtoIn.getDescription(), dtoIn.getToys(), user);
+        user.addOffer(offer);
         offerDao.save(offer);
+        userDao.save(user);
       } else {
         logger.error("User doesnt exist.");
       }
@@ -125,7 +126,9 @@ public class AppModel {
       User user = userDao.getByUsername(dtoIn.getUsername());
       if (user!= null) {
         Bid bid = new Bid(dtoIn.getOfferId(), dtoIn.getCaption(), dtoIn.getDescription(), dtoIn.getToys(), user);
+        user.addBid(bid);
         bidDao.save(bid);
+        userDao.save(user);
       } else {
         logger.error("User doesnt exist.");
       }
@@ -200,12 +203,55 @@ public class AppModel {
   }
 
   public List<OfferDtoOut> getAllActiveOffers() {
-    return null;
+    try {
+      List<Offer> offers = offerDao.getAllActiveOffers();
+      List<OfferDtoOut> dtoOutList = new ArrayList<>();
+
+      for (Offer offer : offers) {
+        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), offer.getToys()));
+      }
+
+      return dtoOutList;
+    } catch (Exception e) {
+      logger.error("Error during getting all active offers: " + e);
+      throw e;
+    }
   }
 
   public void deleteOffer(Long offerId) {
     if(offerId != null) {
       offerDao.delete(offerDao.get(offerId).get());
+    }
+  }
+
+  public List<OfferDtoOut> getAllOffersOfUser(GetAllMyOffersDtoIn dtoIn, boolean active) {
+    try {
+      List<Offer> offers = offerDao.getAllOffersOfUser(dtoIn.getUserId(), active);
+      List<OfferDtoOut> dtoOutList = new ArrayList<>();
+
+      for (Offer offer : offers) {
+        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), offer.getToys()));
+      }
+
+      return dtoOutList;
+    } catch (Exception e) {
+      logger.error("Error during getting all active offers of User: " + e);
+      throw e;
+    }
+  }
+
+  public List<BidDtoOut> getAllBidsOfUser(GetAllMyOffersDtoIn dtoIn, boolean active) {
+    try {
+      List<Bid> bids = bidDao.getAllBidsOfUser(dtoIn.getUserId(), active);
+      List<BidDtoOut> dtoOutList = new ArrayList<>();
+
+      for(Bid bid : bids) {
+        dtoOutList.add(new BidDtoOut(bid.getOfferId(), bid.getUser().getName(), bid.getCaption(), bid.getDescription(), bid.getToys()));
+      }
+      return dtoOutList;
+    } catch (Exception e) {
+      logger.error("Error during getting all bids: " + e);
+      throw e;
     }
   }
 }
