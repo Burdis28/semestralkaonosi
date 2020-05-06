@@ -100,6 +100,7 @@ public class AppModel {
         user = userDao.getByUsername(dtoIn.getUsername());
       } catch (Exception e) {
         logger.error("User doesnt exist: " + e);
+        return "-1";
       }
       if (user != null) {
         if (user.getPassword().equals(dtoIn.getPassword())) {
