@@ -7,7 +7,9 @@ import upce.sem.semestralkabe.dao.UserDao;
 import upce.sem.semestralkabe.dto.BidDtoOut;
 import upce.sem.semestralkabe.dto.CreateBidDtoIn;
 import upce.sem.semestralkabe.dto.CreateOfferDtoIn;
-import upce.sem.semestralkabe.dto.GetAllMyOffersDtoIn;
+import upce.sem.semestralkabe.dto.CreateToyDtoIn;
+import upce.sem.semestralkabe.dto.ToyDtoOut;
+import upce.sem.semestralkabe.dto.UserNameDtoIn;
 import upce.sem.semestralkabe.dto.LoginDtoIn;
 import upce.sem.semestralkabe.dto.OfferDtoOut;
 import upce.sem.semestralkabe.dto.RegisterDtoIn;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import upce.sem.semestralkabe.schema.Bid;
 import upce.sem.semestralkabe.schema.Offer;
+import upce.sem.semestralkabe.schema.Toy;
 import upce.sem.semestralkabe.schema.User;
 
 @Component
@@ -39,7 +42,7 @@ public class AppModel {
   private BidDao bidDao;
 
 
-  public void register(RegisterDtoIn dtoIn) {
+  public String register(RegisterDtoIn dtoIn) {
     try {
       if (dtoIn != null) {
         User user = new User();
@@ -49,11 +52,13 @@ public class AppModel {
         user.setUsername(dtoIn.getUsername());
         user.setName(dtoIn.getName());
         userDao.save(user);
+        return "1";
       }
     } catch (Exception e) {
-      logger.error("Error during saving user: " + e);
-      throw e;
+      logger.error("Error during creating user: " + e);
+      return "-1";
     }
+    return "-1";
   }
 
   public List<OfferDtoOut> getAllOffers() {
@@ -90,18 +95,23 @@ public class AppModel {
   public String login(LoginDtoIn dtoIn) {
     //return "Nemam rad upce";
     if (dtoIn != null) {
-      User user = userDao.getByUsername(dtoIn.getUsername());
+      User user = null;
+      try {
+        user = userDao.getByUsername(dtoIn.getUsername());
+      } catch (Exception e) {
+        logger.error("User doesnt exist: " + e);
+      }
       if (user != null) {
         if (user.getPassword().equals(dtoIn.getPassword())) {
           return "" + user.getId();
         } else {
-          return "0";
+          return "-1";
         }
       } else {
-        return "0";
+        return "-1";
       }
     } else {
-      return "0";
+      return "-1";
     }
   }
 
@@ -224,9 +234,9 @@ public class AppModel {
     }
   }
 
-  public List<OfferDtoOut> getAllOffersOfUser(GetAllMyOffersDtoIn dtoIn, boolean active) {
+  public List<OfferDtoOut> getAllOffersOfUser(UserNameDtoIn dtoIn, boolean active) {
     try {
-      List<Offer> offers = offerDao.getAllOffersOfUser(dtoIn.getUserId(), active);
+      List<Offer> offers = offerDao.getAllOffersOfUser(dtoIn.getUsername(), active);
       List<OfferDtoOut> dtoOutList = new ArrayList<>();
 
       for (Offer offer : offers) {
@@ -240,13 +250,48 @@ public class AppModel {
     }
   }
 
-  public List<BidDtoOut> getAllBidsOfUser(GetAllMyOffersDtoIn dtoIn, boolean active) {
+  public List<BidDtoOut> getAllBidsOfUser(UserNameDtoIn dtoIn, boolean active) {
     try {
-      List<Bid> bids = bidDao.getAllBidsOfUser(dtoIn.getUserId(), active);
+      List<Bid> bids = bidDao.getAllBidsOfUser(dtoIn.getUsername(), active);
       List<BidDtoOut> dtoOutList = new ArrayList<>();
 
       for(Bid bid : bids) {
         dtoOutList.add(new BidDtoOut(bid.getOfferId(), bid.getUser().getName(), bid.getCaption(), bid.getDescription(), bid.getToys()));
+      }
+      return dtoOutList;
+    } catch (Exception e) {
+      logger.error("Error during getting all bids: " + e);
+      throw e;
+    }
+  }
+
+  public void createToy(CreateToyDtoIn dtoIn) {
+    if (dtoIn != null) {
+      User user = userDao.getByUsername(dtoIn.getUsername());
+      if (user!= null) {
+        Toy toy = new Toy();
+        toy.setName(dtoIn.getName());
+        toy.setUser(user);
+        user.addToy(toy);
+        toyDao.save(toy);
+        userDao.save(user);
+      } else {
+        logger.error("User doesnt exist.");
+      }
+    } else {
+      logger.error("DtoIn is null.");
+    }
+  }
+
+  public List<ToyDtoOut> getAllToys(UserNameDtoIn dtoIn) {
+    try {
+      List<Toy> toys = toyDao.getAllToysOfUser(dtoIn.getUsername());
+      List<ToyDtoOut> dtoOutList = new ArrayList<>();
+
+      for(Toy toy : toys) {
+        ToyDtoOut toyDtoOut =  new ToyDtoOut();
+        toyDtoOut.setName(toy.getName());
+        dtoOutList.add(toyDtoOut);
       }
       return dtoOutList;
     } catch (Exception e) {

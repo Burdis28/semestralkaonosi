@@ -15,11 +15,12 @@ import javax.persistence.Table;
 @Table(name = "users")
 public class User {
 
-  @Id
   @GeneratedValue(strategy=GenerationType.AUTO)
   private int id;
 
+  @Id
   private String username;
+
   private String password;
   private String name;
   private String phoneNumber;
@@ -32,6 +33,9 @@ public class User {
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   private List<Bid> bids;
+
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+  private List<Toy> toys;
 
   public User() {
 
@@ -133,6 +137,15 @@ public class User {
     } else {
       bids = new ArrayList<>();
       bids.add(bid);
+    }
+  }
+
+  public void addToy(Toy toy) {
+    if (toys != null) {
+      toys.add(toy);
+    } else {
+      toys = new ArrayList<>();
+      toys.add(toy);
     }
   }
 }

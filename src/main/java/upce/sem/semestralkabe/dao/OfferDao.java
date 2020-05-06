@@ -38,15 +38,15 @@ public class OfferDao implements Dao<Offer> {
   }
 
   @Transactional
-  public List<Offer> getAllOffersOfUser(int userId, boolean active) {
+  public List<Offer> getAllOffersOfUser(String username, boolean active) {
     if (active) {
-      Query query = entityManager.createQuery("SELECT e FROM Offer e where e.active = :active and e.user.id = :userId");
+      Query query = entityManager.createQuery("SELECT e FROM Offer e where e.active = :active and e.user.username = :username");
       query.setParameter("active", true);
-      query.setParameter("userId", userId);
+      query.setParameter("username", username);
       return query.getResultList();
     } else {
-      Query query = entityManager.createQuery("SELECT e FROM Offer e where e.user.id = :userId");
-      query.setParameter("userId", userId);
+      Query query = entityManager.createQuery("SELECT e FROM Offer e where e.user.username = :username");
+      query.setParameter("username", username);
       return query.getResultList();
     }
   }

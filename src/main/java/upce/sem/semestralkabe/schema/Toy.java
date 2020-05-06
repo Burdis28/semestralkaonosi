@@ -2,10 +2,13 @@ package upce.sem.semestralkabe.schema;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -21,6 +24,10 @@ public class Toy {
   //muzou byt i videa, nejspis teda
   @OneToMany(mappedBy="id")
   private List<DBFile> images;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name="user_id")
+  private User user;
 
   public Long getId() {
     return id;
@@ -44,6 +51,14 @@ public class Toy {
 
   public void setImages(List<DBFile> images) {
     this.images = images;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 
   public void addImage(DBFile image) {

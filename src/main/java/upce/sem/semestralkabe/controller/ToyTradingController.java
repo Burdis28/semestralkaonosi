@@ -3,7 +3,9 @@ package upce.sem.semestralkabe.controller;
 import upce.sem.semestralkabe.dto.BidDtoOut;
 import upce.sem.semestralkabe.dto.CreateBidDtoIn;
 import upce.sem.semestralkabe.dto.CreateOfferDtoIn;
-import upce.sem.semestralkabe.dto.GetAllMyOffersDtoIn;
+import upce.sem.semestralkabe.dto.CreateToyDtoIn;
+import upce.sem.semestralkabe.dto.ToyDtoOut;
+import upce.sem.semestralkabe.dto.UserNameDtoIn;
 import upce.sem.semestralkabe.dto.LoginDtoIn;
 import upce.sem.semestralkabe.dto.OfferDtoOut;
 import upce.sem.semestralkabe.dto.RegisterDtoIn;
@@ -30,10 +32,9 @@ public class ToyTradingController {
   private AppModel appModel;
 
   @RequestMapping(value = "/register", method = RequestMethod.POST)
-  public void register(@RequestBody RegisterDtoIn dtoIn) {
+  public String register(@RequestBody RegisterDtoIn dtoIn) {
     logger.info("Register is starting.");
-    appModel.register(dtoIn);
-    logger.info("Register has ended.");
+    return appModel.register(dtoIn);
   }
 
   @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -49,25 +50,25 @@ public class ToyTradingController {
   }
 
   @RequestMapping(value = "/getAllOffersOfUser", method = RequestMethod.GET)
-  public List<OfferDtoOut> getAllOffersOfUser(@RequestBody GetAllMyOffersDtoIn dtoIn) {
+  public List<OfferDtoOut> getAllOffersOfUser(@RequestBody UserNameDtoIn dtoIn) {
     logger.info("Listing all offers of user.");
     return appModel.getAllOffersOfUser(dtoIn, false);
   }
 
   @RequestMapping(value = "/getAllActiveOffersOfUser", method = RequestMethod.GET)
-  public List<OfferDtoOut> getAllActiveOffersOfUser(@RequestBody GetAllMyOffersDtoIn dtoIn) {
+  public List<OfferDtoOut> getAllActiveOffersOfUser(@RequestBody UserNameDtoIn dtoIn) {
     logger.info("Listing all active offers of user.");
     return appModel.getAllOffersOfUser(dtoIn, true);
   }
 
   @RequestMapping(value = "/getAllBidsOfUser", method = RequestMethod.GET)
-  public List<BidDtoOut> getAllBidsOfUser(@RequestBody GetAllMyOffersDtoIn dtoIn) {
+  public List<BidDtoOut> getAllBidsOfUser(@RequestBody UserNameDtoIn dtoIn) {
     logger.info("Listing all offers.");
     return appModel.getAllBidsOfUser(dtoIn, false);
   }
 
   @RequestMapping(value = "/getAllActiveBidsOfUser", method = RequestMethod.GET)
-  public List<BidDtoOut> getAllActiveBidsOfUser(@RequestBody GetAllMyOffersDtoIn dtoIn) {
+  public List<BidDtoOut> getAllActiveBidsOfUser(@RequestBody UserNameDtoIn dtoIn) {
     logger.info("Listing all offers.");
     return appModel.getAllBidsOfUser(dtoIn, true);
   }
@@ -98,6 +99,20 @@ public class ToyTradingController {
     appModel.createBid(dtoIn);
     logger.info("Bid was created.");
   }
+
+  @RequestMapping(value = "/createToy", method = RequestMethod.POST)
+  public void createToy(@RequestBody CreateToyDtoIn dtoIn) {
+    logger.info("Creating toy.");
+    appModel.createToy(dtoIn);
+    logger.info("Toy was created.");
+  }
+
+  @RequestMapping(value = "/getAllToys", method = RequestMethod.GET)
+  public List<ToyDtoOut> getAllToys(@RequestBody UserNameDtoIn dtoIn) {
+    logger.info("Listing all toys.");
+    return appModel.getAllToys(dtoIn);
+  }
+
 
   @RequestMapping(value = "/acceptBid/{bidId}", method = RequestMethod.POST)
   public void acceptBid(@PathVariable("bidId") Long bidId) {
