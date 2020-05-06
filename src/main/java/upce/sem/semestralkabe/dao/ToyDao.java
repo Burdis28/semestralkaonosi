@@ -33,7 +33,7 @@ public class ToyDao implements Dao<Toy> {
   @Transactional
   public List<Toy> getAllToysOfUser(String username) {
     Query query = entityManager.createQuery("SELECT e FROM Toy e where e.user.username = :username");
-
+    query.setParameter("username", username);
     return query.getResultList();
   }
 
