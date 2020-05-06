@@ -103,7 +103,7 @@ public class AppModel {
       }
       if (user != null) {
         if (user.getPassword().equals(dtoIn.getPassword())) {
-          return "" + user.getId();
+          return "" + user.getUsername();
         } else {
           return "-1";
         }
