@@ -1,5 +1,6 @@
 package upce.sem.semestralkabe.schema;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -101,5 +102,12 @@ public class Bid {
     this.user = user;
   }
 
-
+  public void addToy(Toy toy) {
+    if(toys != null) {
+      toys.add(toy);
+    } else {
+      toys = new ArrayList<>();
+      toys.add(toy);
+    }
+  }
 }

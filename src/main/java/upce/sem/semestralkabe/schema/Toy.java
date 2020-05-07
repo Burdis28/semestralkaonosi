@@ -29,6 +29,14 @@ public class Toy {
   @JoinColumn(name="user_id")
   private User user;
 
+  public Toy() {
+  }
+
+  public Toy(String name, User user) {
+    this.name = name;
+    this.user = user;
+  }
+
   public Long getId() {
     return id;
   }

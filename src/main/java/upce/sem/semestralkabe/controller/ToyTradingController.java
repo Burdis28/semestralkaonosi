@@ -49,25 +49,25 @@ public class ToyTradingController {
     return appModel.getAllOffers();
   }
 
-  @RequestMapping(value = "/getAllOffersOfUser", method = RequestMethod.GET)
+  @RequestMapping(value = "/getAllOffersOfUser", method = RequestMethod.POST)
   public List<OfferDtoOut> getAllOffersOfUser(@RequestBody UserNameDtoIn dtoIn) {
     logger.info("Listing all offers of user.");
     return appModel.getAllOffersOfUser(dtoIn, false);
   }
 
-  @RequestMapping(value = "/getAllActiveOffersOfUser", method = RequestMethod.GET)
+  @RequestMapping(value = "/getAllActiveOffersOfUser", method = RequestMethod.POST)
   public List<OfferDtoOut> getAllActiveOffersOfUser(@RequestBody UserNameDtoIn dtoIn) {
     logger.info("Listing all active offers of user.");
     return appModel.getAllOffersOfUser(dtoIn, true);
   }
 
-  @RequestMapping(value = "/getAllBidsOfUser", method = RequestMethod.GET)
+  @RequestMapping(value = "/getAllBidsOfUser", method = RequestMethod.POST)
   public List<BidDtoOut> getAllBidsOfUser(@RequestBody UserNameDtoIn dtoIn) {
     logger.info("Listing all offers.");
     return appModel.getAllBidsOfUser(dtoIn, false);
   }
 
-  @RequestMapping(value = "/getAllActiveBidsOfUser", method = RequestMethod.GET)
+  @RequestMapping(value = "/getAllActiveBidsOfUser", method = RequestMethod.POST)
   public List<BidDtoOut> getAllActiveBidsOfUser(@RequestBody UserNameDtoIn dtoIn) {
     logger.info("Listing all offers.");
     return appModel.getAllBidsOfUser(dtoIn, true);
@@ -107,7 +107,7 @@ public class ToyTradingController {
     logger.info("Toy was created.");
   }
 
-  @RequestMapping(value = "/getAllToys", method = RequestMethod.GET)
+  @RequestMapping(value = "/getAllToys", method = RequestMethod.POST)
   public List<ToyDtoOut> getAllToys(@RequestBody UserNameDtoIn dtoIn) {
     logger.info("Listing all toys.");
     return appModel.getAllToys(dtoIn);
