@@ -10,9 +10,9 @@ public class BidDtoOut {
   private String nameOfPerson;
   private String caption;
   private String description;
-  private List<Toy> toys;
+  private List<ToyDtoOut> toys;
 
-  public BidDtoOut(Long id, Long offerId, String nameOfPerson, String caption, String description, List<Toy> toys) {
+  public BidDtoOut(Long id, Long offerId, String nameOfPerson, String caption, String description, List<ToyDtoOut> toys) {
     this.id = id;
     this.offerId = offerId;
     this.nameOfPerson = nameOfPerson;
@@ -61,11 +61,11 @@ public class BidDtoOut {
     this.description = description;
   }
 
-  public List<Toy> getToys() {
+  public List<ToyDtoOut> getToys() {
     return toys;
   }
 
-  public void setToys(List<Toy> toys) {
+  public void setToys(List<ToyDtoOut> toys) {
     this.toys = toys;
   }
 }

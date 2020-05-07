@@ -1,5 +1,13 @@
 package upce.sem.semestralkabe.model;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.Base64;
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 import upce.sem.semestralkabe.dao.BidDao;
 import upce.sem.semestralkabe.dao.OfferDao;
 import upce.sem.semestralkabe.dao.ToyDao;
@@ -67,7 +75,7 @@ public class AppModel {
       List<OfferDtoOut> dtoOutList = new ArrayList<>();
 
       for (Offer offer : offers) {
-        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), offer.getToys()));
+        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), createListOfToysDtoOut(offer.getToys())));
       }
 
       return dtoOutList;
@@ -83,7 +91,7 @@ public class AppModel {
       List<BidDtoOut> dtoOutList = new ArrayList<>();
 
       for (Bid bid : bids) {
-        dtoOutList.add(new BidDtoOut(bid.getId(), bid.getOfferId(), bid.getUser().getName(), bid.getCaption(), bid.getDescription(), bid.getToys()));
+        dtoOutList.add(new BidDtoOut(bid.getId(), bid.getOfferId(), bid.getUser().getName(), bid.getCaption(), bid.getDescription(),createListOfToysDtoOut(bid.getToys())));
       }
       return dtoOutList;
     } catch (Exception e) {
@@ -246,7 +254,7 @@ public class AppModel {
       List<OfferDtoOut> dtoOutList = new ArrayList<>();
 
       for (Offer offer : offers) {
-        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), offer.getToys()));
+        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), createListOfToysDtoOut(offer.getToys())));
       }
 
       return dtoOutList;
@@ -268,7 +276,7 @@ public class AppModel {
       List<OfferDtoOut> dtoOutList = new ArrayList<>();
 
       for (Offer offer : offers) {
-        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), offer.getToys()));
+        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), createListOfToysDtoOut(offer.getToys())));
       }
 
       return dtoOutList;
@@ -284,13 +292,24 @@ public class AppModel {
       List<BidDtoOut> dtoOutList = new ArrayList<>();
 
       for (Bid bid : bids) {
-        dtoOutList.add(new BidDtoOut(bid.getId(), bid.getOfferId(), bid.getUser().getName(), bid.getCaption(), bid.getDescription(), bid.getToys()));
+        dtoOutList.add(new BidDtoOut(bid.getId(), bid.getOfferId(), bid.getUser().getName(), bid.getCaption(), bid.getDescription(), createListOfToysDtoOut(bid.getToys())));
       }
       return dtoOutList;
     } catch (Exception e) {
       logger.error("Error during getting all bids: " + e);
       throw e;
     }
+  }
+
+  private List<ToyDtoOut> createListOfToysDtoOut(List<Toy> toys) {
+    List<ToyDtoOut> dtoOuts = new ArrayList<>();
+    for (Toy toy : toys) {
+      ToyDtoOut dtoOut = new ToyDtoOut();
+      dtoOut.setName(toy.getName());
+      dtoOut.setImageData(imgToBase64String(toy.getImage(), ".jpg"));
+    }
+    return dtoOuts;
+
   }
 
   public void createToy(CreateToyDtoIn dtoIn) {
@@ -300,6 +319,7 @@ public class AppModel {
         Toy toy = new Toy();
         toy.setName(dtoIn.getName());
         toy.setUser(user);
+        toy.setImage(createImage(dtoIn.getImageData()));
         user.addToy(toy);
         toyDao.save(toy);
         userDao.save(user);
@@ -308,6 +328,46 @@ public class AppModel {
       }
     } else {
       logger.error("DtoIn is null.");
+    }
+  }
+
+  private BufferedImage createImage(String imageData) {
+    BufferedImage img = null;
+    if(imageData != null) {
+      String base64Image = imageData.split(",")[1];
+      byte[] imageBytes = DatatypeConverter.parseBase64Binary(base64Image);
+      try {
+        img = ImageIO.read(new ByteArrayInputStream(imageBytes));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      return img;
+    } else {
+      logger.error("There are no imageData to build Image.");
+      return null;
+    }
+  }
+
+  public static String imgToBase64String(BufferedImage img, String formatName)
+  {
+    final ByteArrayOutputStream os = new ByteArrayOutputStream();
+
+    try
+    {
+      ImageIO.write(img, formatName, os);
+      return Base64.getEncoder().encodeToString(os.toByteArray());
+    }
+    catch (final IOException ioe)
+    {
+      throw new UncheckedIOException(ioe);
+    }
+  }
+
+  public static BufferedImage base64StringToImg(String base64String) {
+    try {
+      return ImageIO.read(new ByteArrayInputStream(Base64.getDecoder().decode(base64String)));
+    } catch (final IOException ioe) {
+      throw new UncheckedIOException(ioe);
     }
   }
 

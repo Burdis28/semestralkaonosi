@@ -2,8 +2,9 @@ package upce.sem.semestralkabe.dto;
 
 public class CreateToyDtoIn {
 
-  public String name;
-  public String username;
+  private String name;
+  private String username;
+  private String imageData;
 
   public String getName() {
     return name;
@@ -19,5 +20,13 @@ public class CreateToyDtoIn {
 
   public void setUsername(String username) {
     this.username = username;
+  }
+
+  public String getImageData() {
+    return imageData;
+  }
+
+  public void setImageData(String imageData) {
+    this.imageData = imageData;
   }
 }
