@@ -3,6 +3,7 @@ package upce.sem.semestralkabe.schema;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,8 +27,8 @@ public class Offer {
   private String description;
   private Boolean active;
 
-  @OneToMany(mappedBy="id")
-  private List<Toy> toys;
+  @ElementCollection(targetClass=Long.class)
+  private List<Long> toys;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name="user_id")
@@ -39,7 +40,7 @@ public class Offer {
   public Offer() {
   }
 
-  public Offer(String caption, String description, List<Toy> toys, User user) {
+  public Offer(String caption, String description, List<Long> toys, User user) {
     this.caption = caption;
     this.description = description;
     this.toys = toys;
@@ -80,11 +81,11 @@ public class Offer {
     this.active = active;
   }
 
-  public List<Toy> getToys() {
+  public List<Long> getToys() {
     return toys;
   }
 
-  public void setToys(List<Toy> toys) {
+  public void setToys(List<Long> toys) {
     this.toys = toys;
   }
 
@@ -104,7 +105,7 @@ public class Offer {
     this.winnerBidId = winner;
   }
 
-  public void addToy(Toy toy) {
+  public void addToy(Long toy) {
     if(toys != null) {
       toys.add(toy);
     } else {

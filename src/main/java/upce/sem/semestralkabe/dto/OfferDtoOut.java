@@ -1,7 +1,6 @@
 package upce.sem.semestralkabe.dto;
 
 import java.util.List;
-import upce.sem.semestralkabe.schema.Toy;
 
 public class OfferDtoOut {
 
@@ -9,13 +8,17 @@ public class OfferDtoOut {
   private String nameOfPerson;
   private String caption;
   private String description;
+  private Boolean active;
+  private Long winner;
   private List<ToyDtoOut> toys;
 
-  public OfferDtoOut(Long offerId, String nameOfPerson, String caption, String description, List<ToyDtoOut> toys) {
+  public OfferDtoOut(Long offerId, String nameOfPerson, String caption, String description, Boolean active, Long winner, List<ToyDtoOut> toys) {
     this.offerId = offerId;
     this.nameOfPerson = nameOfPerson;
     this.caption = caption;
     this.description = description;
+    this.active = active;
+    this.winner = winner;
     this.toys = toys;
   }
 
@@ -57,5 +60,21 @@ public class OfferDtoOut {
 
   public void setToys(List<ToyDtoOut> toys) {
     this.toys = toys;
+  }
+
+  public Long getWinner() {
+    return winner;
+  }
+
+  public void setWinner(Long winner) {
+    this.winner = winner;
+  }
+
+  public Boolean getActive() {
+    return active;
+  }
+
+  public void setActive(Boolean active) {
+    this.active = active;
   }
 }

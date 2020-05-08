@@ -10,14 +10,16 @@ public class BidDtoOut {
   private String nameOfPerson;
   private String caption;
   private String description;
+  private Boolean active;
   private List<ToyDtoOut> toys;
 
-  public BidDtoOut(Long id, Long offerId, String nameOfPerson, String caption, String description, List<ToyDtoOut> toys) {
+  public BidDtoOut(Long id, Long offerId, String nameOfPerson, String caption, String description,Boolean active, List<ToyDtoOut> toys) {
     this.id = id;
     this.offerId = offerId;
     this.nameOfPerson = nameOfPerson;
     this.caption = caption;
     this.description = description;
+    this.active = active;
     this.toys = toys;
   }
 
@@ -59,6 +61,14 @@ public class BidDtoOut {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public Boolean getActive() {
+    return active;
+  }
+
+  public void setActive(Boolean active) {
+    this.active = active;
   }
 
   public List<ToyDtoOut> getToys() {

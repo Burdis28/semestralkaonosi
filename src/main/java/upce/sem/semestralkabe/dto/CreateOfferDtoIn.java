@@ -7,7 +7,7 @@ public class CreateOfferDtoIn {
 
   private String caption;
   private String description;
-  private List<Toy> toys;
+  private List<Long> toys;
   private String username;
 
   public String getCaption() {
@@ -26,11 +26,11 @@ public class CreateOfferDtoIn {
     this.description = description;
   }
 
-  public List<Toy> getToys() {
+  public List<Long> getToys() {
     return toys;
   }
 
-  public void setToys(List<Toy> toys) {
+  public void setToys(List<Long> toys) {
     this.toys = toys;
   }
 

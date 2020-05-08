@@ -28,13 +28,13 @@ public class User {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
   private List<Offer> offers;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
   private List<Offer> biddedOffers;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
   private List<Bid> bids;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
   private List<Toy> toys;
 
   public User() {
@@ -120,6 +120,14 @@ public class User {
 
   public void setBids(List<Bid> bids) {
     this.bids = bids;
+  }
+
+  public List<Toy> getToys() {
+    return toys;
+  }
+
+  public void setToys(List<Toy> toys) {
+    this.toys = toys;
   }
 
   public void addOffer(Offer offer) {

@@ -1,9 +1,12 @@
 package upce.sem.semestralkabe.schema;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,18 +29,19 @@ public class Bid {
   private String description;
   private Boolean active;
 
-  @OneToMany(mappedBy="id")
-  private List<Toy> toys;
+  @ElementCollection(targetClass=Long.class)
+  private List<Long> toys;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name="user_id")
+  @JsonIgnore
   private User user;
 
   public Bid() {
 
   }
 
-  public Bid(Long offerId, String caption, String description, List<Toy> toys, User user) {
+  public Bid(Long offerId, String caption, String description, List<Long> toys, User user) {
     this.offerId = offerId;
     this.caption = caption;
     this.description = description;
@@ -86,11 +90,11 @@ public class Bid {
     this.active = active;
   }
 
-  public List<Toy> getToys() {
+  public List<Long> getToys() {
     return toys;
   }
 
-  public void setToys(List<Toy> toys) {
+  public void setToys(List<Long> toys) {
     this.toys = toys;
   }
 
@@ -102,7 +106,7 @@ public class Bid {
     this.user = user;
   }
 
-  public void addToy(Toy toy) {
+  public void addToy(Long toy) {
     if(toys != null) {
       toys.add(toy);
     } else {

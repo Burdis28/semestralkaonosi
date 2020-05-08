@@ -1,10 +1,12 @@
 package upce.sem.semestralkabe.schema;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,6 +19,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "toys")
 public class Toy {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -26,8 +29,9 @@ public class Toy {
   @Lob
   private BufferedImage image;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name="user_id")
+  @JsonIgnore
   private User user;
 
   public Toy() {

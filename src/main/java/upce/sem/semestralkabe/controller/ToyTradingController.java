@@ -113,6 +113,11 @@ public class ToyTradingController {
     return appModel.getAllToys(dtoIn);
   }
 
+  @RequestMapping(value = "/getToy/{toyId}", method = RequestMethod.GET)
+  public ToyDtoOut getToy(@PathVariable("toyId") Long toyId) {
+    logger.info("Getting one specific toy.");
+    return appModel.getToy(toyId);
+  }
 
   @RequestMapping(value = "/acceptBid/{bidId}", method = RequestMethod.POST)
   public void acceptBid(@PathVariable("bidId") Long bidId) {
@@ -122,10 +127,23 @@ public class ToyTradingController {
   }
 
   @RequestMapping(value = "/deleteOffer/{offerId}", method = RequestMethod.POST)
-  public void createOffer(@PathVariable("offerId") Long offerId) {
+  public void deleteOffer(@PathVariable("offerId") Long offerId) {
     logger.info("Deleting offer.");
     appModel.deleteOffer(offerId);
     logger.info("Offer was deleted.");
+  }
+
+  @RequestMapping(value = "/deleteBid/{bidId}", method = RequestMethod.POST)
+  public void deleteBid(@PathVariable("bidId") Long bidId) {
+    logger.info("Deleting bid.");
+    appModel.deleteBid(bidId);
+    logger.info("Bid was deleted.");
+  }
+
+  @RequestMapping(value = "/deleteToy/{toyId}", method = RequestMethod.POST)
+  public String deleteToy(@PathVariable("toyId") Long toyId) {
+    logger.info("Deleting Toy.");
+    return appModel.deleteToy(toyId);
   }
 
   @RequestMapping(value = "/initialize", method = RequestMethod.POST)
