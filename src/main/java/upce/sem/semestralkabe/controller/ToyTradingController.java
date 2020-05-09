@@ -127,10 +127,9 @@ public class ToyTradingController {
   }
 
   @RequestMapping(value = "/acceptBid/{bidId}", method = RequestMethod.POST)
-  public void acceptBid(@PathVariable("bidId") Long bidId) {
+  public String acceptBid(@PathVariable("bidId") Long bidId) {
     logger.info("Accept Bid and close offer.");
-    appModel.acceptBid(bidId);
-    logger.info("Bid was accepted and offer closed.");
+    return appModel.acceptBid(bidId);
   }
 
   @RequestMapping(value = "/deleteOffer/{offerId}", method = RequestMethod.POST)

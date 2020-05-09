@@ -155,7 +155,7 @@ public class AppModel {
     }
   }
 
-  public void acceptBid(Long bidId) {
+  public String acceptBid(Long bidId) {
     //accept bid and close offer
     if (bidId != null) {
       Optional<Bid> bid = bidDao.get(bidId);
@@ -170,8 +170,9 @@ public class AppModel {
           bid1.setActive(false);
           bidDao.save(bid1);
         }
-      }
-    }
+        return bid.get().getUser().getPhoneNumber();
+      } return "-1";
+    } return "-1";
   }
 
   public void initialize() {
