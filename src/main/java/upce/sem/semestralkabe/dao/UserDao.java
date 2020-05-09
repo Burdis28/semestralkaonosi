@@ -32,10 +32,14 @@ public class UserDao implements Dao<User> {
 
   @Transactional
   public User getByUsername(String username) {
-    Query q = entityManager.createQuery(
-        "SELECT u FROM User u WHERE u.username = :username");
-    q.setParameter("username", username);
-    return (User) q.getSingleResult();
+    try {
+      Query q = entityManager.createQuery(
+          "SELECT u FROM User u WHERE u.username = :username");
+      q.setParameter("username", username);
+      return (User) q.getSingleResult();
+    } catch (Exception e) {
+      return null;
+    }
   }
 
   @Override

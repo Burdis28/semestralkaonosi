@@ -86,12 +86,19 @@ public class ToyTradingController {
     return appModel.getAllBids(offerId);
   }
 
+  @RequestMapping(value = "/getOffer/{offerId}", method = RequestMethod.GET)
+  public OfferDtoOut getOffer(@PathVariable("offerId") Long offerId) {
+    logger.info("Getting offer based on offerId: " + offerId);
+    return appModel.getOffer(offerId);
+  }
+
   @RequestMapping(value = "/createOffer", method = RequestMethod.POST)
   public void createOffer(@RequestBody CreateOfferDtoIn dtoIn) {
     logger.info("Creating offer.");
     appModel.createOffer(dtoIn);
     logger.info("Offer was created.");
   }
+
 
   @RequestMapping(value = "/createBid", method = RequestMethod.POST)
   public void createBid(@RequestBody CreateBidDtoIn dtoIn) {

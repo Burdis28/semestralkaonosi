@@ -11,8 +11,13 @@ public class OfferDtoOut {
   private Boolean active;
   private Long winner;
   private List<ToyDtoOut> toys;
+  private String username;
 
-  public OfferDtoOut(Long offerId, String nameOfPerson, String caption, String description, Boolean active, Long winner, List<ToyDtoOut> toys) {
+  public OfferDtoOut() {
+
+  }
+
+  public OfferDtoOut(Long offerId, String nameOfPerson, String caption, String description, Boolean active, Long winner, List<ToyDtoOut> toys, String username) {
     this.offerId = offerId;
     this.nameOfPerson = nameOfPerson;
     this.caption = caption;
@@ -20,6 +25,7 @@ public class OfferDtoOut {
     this.active = active;
     this.winner = winner;
     this.toys = toys;
+    this.username = username;
   }
 
   public Long getOfferId() {
@@ -76,5 +82,13 @@ public class OfferDtoOut {
 
   public void setActive(Boolean active) {
     this.active = active;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
   }
 }

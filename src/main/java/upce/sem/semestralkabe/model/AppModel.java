@@ -76,7 +76,7 @@ public class AppModel {
       List<OfferDtoOut> dtoOutList = new ArrayList<>();
 
       for (Offer offer : offers) {
-        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(),offer.getActive(), offer.getWinner(), createListOfToysDtoOut(offer.getToys())));
+        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(),offer.getActive(), offer.getWinner(), createListOfToysDtoOut(offer.getToys()), offer.getUser().getUsername()));
       }
 
       return dtoOutList;
@@ -306,7 +306,7 @@ public class AppModel {
       List<OfferDtoOut> dtoOutList = new ArrayList<>();
 
       for (Offer offer : offers) {
-        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), offer.getActive(), offer.getWinner(), createListOfToysDtoOut(offer.getToys())));
+        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), offer.getActive(), offer.getWinner(), createListOfToysDtoOut(offer.getToys()), offer.getUser().getUsername()));
       }
 
       return dtoOutList;
@@ -328,7 +328,7 @@ public class AppModel {
       List<OfferDtoOut> dtoOutList = new ArrayList<>();
 
       for (Offer offer : offers) {
-        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), offer.getActive(), offer.getWinner(), createListOfToysDtoOut(offer.getToys())));
+        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), offer.getActive(), offer.getWinner(), createListOfToysDtoOut(offer.getToys()), offer.getUser().getUsername()));
       }
 
       return dtoOutList;
@@ -362,6 +362,7 @@ public class AppModel {
         dtoOut.setId(toy.get().getId());
         dtoOut.setName(toy.get().getName());
         dtoOut.setImageData(imgToBase64String(toy.get().getImage(), ".jpg"));
+        dtoOuts.add(dtoOut);
       }
     }
     return dtoOuts;
@@ -436,6 +437,7 @@ public class AppModel {
         ToyDtoOut toyDtoOut = new ToyDtoOut();
         toyDtoOut.setId(toy.getId());
         toyDtoOut.setName(toy.getName());
+        toyDtoOut.setImageData(imgToBase64String(toy.getImage(), ".jpg"));
         dtoOutList.add(toyDtoOut);
       }
       return dtoOutList;
@@ -446,7 +448,16 @@ public class AppModel {
   }
 
   public ToyDtoOut getToy(Long toyId) {
-    return null;
+    if (toyId != null) {
+      Optional<Toy> toy = toyDao.get(toyId);
+      if(toy.isPresent()) {
+        ToyDtoOut dtoOut = new ToyDtoOut();
+        dtoOut.setId(toy.get().getId());
+        dtoOut.setImageData(imgToBase64String(toy.get().getImage(), ".jpg"));
+        dtoOut.setName(toy.get().getName());
+        return dtoOut;
+      } else return null;
+    } else return null;
   }
 
   public String deleteToy(Long toyId) {
@@ -468,5 +479,23 @@ public class AppModel {
       toyDao.delete(toyDao.get(toyId).get());
       return "1";
     } else return "-1";
+  }
+
+  public OfferDtoOut getOffer(Long offerId) {
+    OfferDtoOut dtoOut = new OfferDtoOut();
+    if(offerId != null) {
+      Optional<Offer> offer = offerDao.get(offerId);
+      if(offer.isPresent()) {
+        dtoOut.setActive(offer.get().getActive());
+        dtoOut.setCaption(offer.get().getCaption());
+        dtoOut.setDescription(offer.get().getDescription());
+        dtoOut.setNameOfPerson(offer.get().getUser().getName());
+        dtoOut.setOfferId(offer.get().getId());
+        dtoOut.setToys(createListOfToysDtoOut(offer.get().getToys()));
+        dtoOut.setUsername(offer.get().getUser().getUsername());
+        dtoOut.setWinner(offer.get().getWinner());
+        return dtoOut;
+      } else return null;
+    } else return null;
   }
 }
