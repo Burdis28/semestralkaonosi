@@ -167,8 +167,9 @@ public class AppModel {
         offer.ifPresent(offer1 -> offerDao.save(offer1));
         List<Bid> bids = bidDao.getAllBidsForOffer(bid.get().getOfferId());
         for (Bid bid1 : bids) {
-          bid1.setActive(false);
-          bidDao.save(bid1);
+          if(bid1 != bid.get()) {
+            bidDao.delete(bid1);
+          }
         }
         String cislo = bid.get().getUser().getPhoneNumber();
         return cislo;
@@ -293,7 +294,6 @@ public class AppModel {
     acceptBid(bid2.getId());
 
     deleteOffer(offer5.getId());
-    deleteBid(bid4.getId());
   }
 
   public void deleteBid(Long id) {
