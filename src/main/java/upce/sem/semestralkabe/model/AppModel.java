@@ -59,6 +59,7 @@ public class AppModel {
         user.setPassword(dtoIn.getPassword());
         user.setUsername(dtoIn.getUsername());
         user.setName(dtoIn.getName());
+        user.setPhoneNumber(dtoIn.getPhoneNumber());
         userDao.save(user);
         return "1";
       }
