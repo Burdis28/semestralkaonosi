@@ -25,9 +25,7 @@ public class Toy {
   private Long id;
 
   private String name;
-
-  @Lob
-  private BufferedImage image;
+  private String image;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name="user_id")
@@ -58,11 +56,11 @@ public class Toy {
     this.name = name;
   }
 
-  public BufferedImage getImage() {
+  public String getImage() {
     return image;
   }
 
-  public void setImage(BufferedImage image) {
+  public void setImage(String image) {
     this.image = image;
   }
 

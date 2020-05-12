@@ -50,7 +50,6 @@ public class AppModel {
   @Autowired
   private BidDao bidDao;
 
-
   public String register(RegisterDtoIn dtoIn) {
     try {
       if (dtoIn != null) {
@@ -170,7 +169,8 @@ public class AppModel {
           bid1.setActive(false);
           bidDao.save(bid1);
         }
-        return bid.get().getUser().getPhoneNumber();
+        String cislo = bid.get().getUser().getPhoneNumber();
+        return cislo;
       } return "-1";
     } return "-1";
   }
@@ -362,7 +362,7 @@ public class AppModel {
         ToyDtoOut dtoOut = new ToyDtoOut();
         dtoOut.setId(toy.get().getId());
         dtoOut.setName(toy.get().getName());
-        dtoOut.setImageData(imgToBase64String(toy.get().getImage(), ".jpg"));
+        dtoOut.setImageData(toy.get().getImage());
         dtoOuts.add(dtoOut);
       }
     }
@@ -377,7 +377,7 @@ public class AppModel {
         Toy toy = new Toy();
         toy.setName(dtoIn.getName());
         toy.setUser(user);
-        toy.setImage(createImage(dtoIn.getImageData()));
+        toy.setImage(dtoIn.getImageData());
         user.addToy(toy);
         toyDao.save(toy);
         userDao.save(user);
@@ -438,7 +438,7 @@ public class AppModel {
         ToyDtoOut toyDtoOut = new ToyDtoOut();
         toyDtoOut.setId(toy.getId());
         toyDtoOut.setName(toy.getName());
-        toyDtoOut.setImageData(imgToBase64String(toy.getImage(), ".jpg"));
+        toyDtoOut.setImageData(toy.getImage());
         dtoOutList.add(toyDtoOut);
       }
       return dtoOutList;
@@ -454,7 +454,7 @@ public class AppModel {
       if(toy.isPresent()) {
         ToyDtoOut dtoOut = new ToyDtoOut();
         dtoOut.setId(toy.get().getId());
-        dtoOut.setImageData(imgToBase64String(toy.get().getImage(), ".jpg"));
+        dtoOut.setImageData(toy.get().getImage());
         dtoOut.setName(toy.get().getName());
         return dtoOut;
       } else return null;
