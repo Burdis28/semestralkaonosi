@@ -76,7 +76,9 @@ public class AppModel {
       List<OfferDtoOut> dtoOutList = new ArrayList<>();
 
       for (Offer offer : offers) {
-        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(),offer.getActive(), offer.getWinner(), createListOfToysDtoOut(offer.getToys()), offer.getUser().getUsername()));
+        dtoOutList.add(
+            new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), offer.getActive(), offer.getWinner(), createListOfToysDtoOut(offer.getToys()),
+                offer.getUser().getUsername()));
       }
 
       return dtoOutList;
@@ -164,17 +166,35 @@ public class AppModel {
         Optional<Offer> offer = offerDao.get(bid.get().getOfferId());
         offer.ifPresent(offer1 -> offer1.setActive(false));
         offer.ifPresent(offer1 -> offer1.setWinner(bid.get().getOfferId()));
+        offer.ifPresent(offer1 -> {
+          List<Long> toys = offer1.getToys();
+          deactivateToys(toys);
+        });
         offer.ifPresent(offer1 -> offerDao.save(offer1));
         List<Bid> bids = bidDao.getAllBidsForOffer(bid.get().getOfferId());
         for (Bid bid1 : bids) {
-          if(bid1 != bid.get()) {
+          if (bid1 != bid.get()) {
+            List<Long> toys = bid1.getToys();
+            deactivateToys(toys);
             bidDao.delete(bid1);
           }
         }
         String cislo = bid.get().getUser().getPhoneNumber();
         return cislo;
-      } return "-1";
-    } return "-1";
+      }
+      return "-1";
+    }
+    return "-1";
+  }
+
+  private void deactivateToys(List<Long> toys) {
+    for (Long toyId : toys) {
+      Toy toy = toyDao.get(toyId).get();
+      if (toy != null) {
+        toy.setUsable(false);
+        toyDao.save(toy);
+      }
+    }
   }
 
   public void initialize() {
@@ -191,28 +211,36 @@ public class AppModel {
     toy1.setUser(user1);
     toy1.setName("toy1");
     toy1.setImage(null);
+    toy1.setImage("R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs");
 
     user1.addToy(toy1);
     toyDao.save(toy1);
     userDao.save(user1);
 
     Toy toy2 = new Toy("toy2", user1);
+    toy2.setImage("R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs");
 
     user1.addToy(toy2);
     toyDao.save(toy2);
     userDao.save(user1);
 
     Toy toy3 = new Toy("toy3", user1);
+    toy3.setImage("R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs");
+
     user1.addToy(toy3);
     toyDao.save(toy3);
     userDao.save(user1);
 
     Toy toy4 = new Toy("toy4", user1);
+    toy4.setImage("R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs");
+
     user1.addToy(toy4);
     toyDao.save(toy4);
     userDao.save(user1);
 
     Toy toy5 = new Toy("toy5", user1);
+    toy5.setImage("R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs");
+
     user1.addToy(toy5);
     toyDao.save(toy5);
     userDao.save(user1);
@@ -222,7 +250,6 @@ public class AppModel {
     Offer offer3 = new Offer("Caption 3", "Description 3", null, admin);
     Offer offer4 = new Offer("Caption 4", "Description 4", null, admin);
     Offer offer5 = new Offer("Caption 5", "Description 5", null, admin);
-
 
     offer1.addToy(toy1.getId());
     offer2.addToy(toy2.getId());
@@ -270,7 +297,6 @@ public class AppModel {
     toyDao.save(toy8);
     userDao.save(user2);
 
-
     bid.addToy(toy6.getId());
     bid2.addToy(toy7.getId());
     bid2.addToy(toy8.getId());
@@ -308,7 +334,9 @@ public class AppModel {
       List<OfferDtoOut> dtoOutList = new ArrayList<>();
 
       for (Offer offer : offers) {
-        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), offer.getActive(), offer.getWinner(), createListOfToysDtoOut(offer.getToys()), offer.getUser().getUsername()));
+        dtoOutList.add(
+            new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), offer.getActive(), offer.getWinner(), createListOfToysDtoOut(offer.getToys()),
+                offer.getUser().getUsername()));
       }
 
       return dtoOutList;
@@ -330,7 +358,9 @@ public class AppModel {
       List<OfferDtoOut> dtoOutList = new ArrayList<>();
 
       for (Offer offer : offers) {
-        dtoOutList.add(new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), offer.getActive(), offer.getWinner(), createListOfToysDtoOut(offer.getToys()), offer.getUser().getUsername()));
+        dtoOutList.add(
+            new OfferDtoOut(offer.getId(), offer.getUser().getName(), offer.getCaption(), offer.getDescription(), offer.getActive(), offer.getWinner(), createListOfToysDtoOut(offer.getToys()),
+                offer.getUser().getUsername()));
       }
 
       return dtoOutList;
@@ -359,7 +389,7 @@ public class AppModel {
     List<ToyDtoOut> dtoOuts = new ArrayList<>();
     for (Long id : toys) {
       Optional<Toy> toy = toyDao.get(id);
-      if(toy.isPresent()) {
+      if (toy.isPresent()) {
         ToyDtoOut dtoOut = new ToyDtoOut();
         dtoOut.setId(toy.get().getId());
         dtoOut.setName(toy.get().getName());
@@ -392,7 +422,7 @@ public class AppModel {
 
   private BufferedImage createImage(String imageData) {
     BufferedImage img = null;
-    if(imageData != null) {
+    if (imageData != null) {
       String base64Image = imageData.split(",")[1];
       byte[] imageBytes = DatatypeConverter.parseBase64Binary(base64Image);
       try {
@@ -417,17 +447,21 @@ public class AppModel {
       } catch (final IOException ioe) {
         throw new UncheckedIOException(ioe);
       }
-    } else return "";
+    } else {
+      return "";
+    }
   }
 
   public static BufferedImage base64StringToImg(String base64String) {
-    if(base64String != null) {
+    if (base64String != null) {
       try {
         return ImageIO.read(new ByteArrayInputStream(Base64.getDecoder().decode(base64String)));
       } catch (final IOException ioe) {
         throw new UncheckedIOException(ioe);
       }
-    } else return null;
+    } else {
+      return null;
+    }
   }
 
   public List<ToyDtoOut> getAllToys(UserNameDtoIn dtoIn) {
@@ -452,14 +486,18 @@ public class AppModel {
   public ToyDtoOut getToy(Long toyId) {
     if (toyId != null) {
       Optional<Toy> toy = toyDao.get(toyId);
-      if(toy.isPresent()) {
+      if (toy.isPresent()) {
         ToyDtoOut dtoOut = new ToyDtoOut();
         dtoOut.setId(toy.get().getId());
         dtoOut.setImageData(toy.get().getImage());
         dtoOut.setName(toy.get().getName());
         return dtoOut;
-      } else return null;
-    } else return null;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
   }
 
   public String deleteToy(Long toyId) {
@@ -480,14 +518,16 @@ public class AppModel {
     if (toyId != null) {
       toyDao.delete(toyDao.get(toyId).get());
       return "1";
-    } else return "-1";
+    } else {
+      return "-1";
+    }
   }
 
   public OfferDtoOut getOffer(Long offerId) {
     OfferDtoOut dtoOut = new OfferDtoOut();
-    if(offerId != null) {
+    if (offerId != null) {
       Optional<Offer> offer = offerDao.get(offerId);
-      if(offer.isPresent()) {
+      if (offer.isPresent()) {
         dtoOut.setActive(offer.get().getActive());
         dtoOut.setCaption(offer.get().getCaption());
         dtoOut.setDescription(offer.get().getDescription());
@@ -497,7 +537,11 @@ public class AppModel {
         dtoOut.setUsername(offer.get().getUser().getUsername());
         dtoOut.setWinner(offer.get().getWinner());
         return dtoOut;
-      } else return null;
-    } else return null;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
   }
 }
